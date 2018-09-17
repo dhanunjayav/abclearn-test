@@ -1,2 +1,3 @@
 uptime
+cd - 
 date
