@@ -20,46 +20,44 @@ DOCKER_HOST=unix:///var/run/docker.sock
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
-
   </dependencies>
-   <build>
+<build>
   <plugins>
-    <plugin>
-    <groupId>com.spotify</groupId>
-    <artifactId>docker-maven-plugin</artifactId>
-    <version>0.4.10</version>
-    <executions>
+   <plugin>
+      <groupId>com.spotify</groupId>
+      <artifactId>docker-maven-plugin</artifactId>
+      <version>0.4.10</version>
+      <executions>
      <execution>
        <phase>package</phase>
        <goals>
          <goal>build</goal>
-       </goals>
-       <configuration>
-		<imageName>dhanu/${project.artifactId}</imageName>
-		<dockerDirectory>src/main/docker</dockerDirectory>
-		<baseImage>java:openjdk-8-jdk-alpine</baseImage>
-		<entryPoint>["java","-jar","/${project.build.finalName}.jar"]</entryPoint>
-		<pushImage>false</pushImage>
-		<resources>
-			<resource>
-				<targetPath>/opt</targetPath>
-				<directory>${project.build.directory}</directory>
-				<excludes>
+</goals>
+</execution>
+</executions>
+      <configuration>
+        <imageName>${project.artifactId}</imageName>
+        <baseImage>java:8</baseImage>
+        <entryPoint>["java", "-jar", "/${project.build.finalName}.jar"]</entryPoint>
+        <!-- copy the service's jar file from target into the root directory of the image --> 
+        <resources>
+           <resource>
+             <targetPath>/</targetPath>
+             <directory>${project.build.directory}</directory>
+             <excludes>
 				  <exclude>target/**/*</exclude>
 				   <exclude>pom.xml</exclude>
 				    <exclude>*.iml</exclude>
-				</excludes>
-				<include>${project.build.finalName}.jar</include>
-			</resource>
-		</resources>
-	</configuration>
-
-     </execution>
-   </executions>
-   </plugin>
+</excludes>
+             <include>${project.build.finalName}.jar</include>
+           </resource>
+        </resources>
+      </configuration>
+    </plugin>
 </plugins>
 </build>
 </project>
+
 [root@5987d22270a2 dockerapp]#
 [root@5987d22270a2 dockerapp]#
 [INFO] ------------------------------------------------------------------------
